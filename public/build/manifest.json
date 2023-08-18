@@ -1,0 +1,34 @@
+{
+  "favicon/vite.svg": {
+    "file": "assets/img/asset-vite-1-4a748afd.svg",
+    "src": "image/dynamic/vite.svg"
+  },
+  "image/dynamic/javascript.svg": {
+    "file": "assets/img/asset-javascript-4-8dac5379.svg",
+    "src": "image/dynamic/javascript.svg"
+  },
+  "image/dynamic/vite.svg": {
+    "file": "assets/img/asset-vite-1-4a748afd.svg",
+    "src": "image/dynamic/vite.svg"
+  },
+  "image/static/php.svg": {
+    "file": "assets/img/asset-php-3-bf8b7e48.svg",
+    "src": "image/static/php.svg"
+  },
+  "js/app.css": {
+    "file": "assets/css/asset-app-6-61de16b7.css",
+    "src": "js/app.css"
+  },
+  "js/app.js": {
+    "assets": [
+      "assets/img/asset-javascript-4-8dac5379.svg",
+      "assets/img/asset-vite-1-4a748afd.svg"
+    ],
+    "css": [
+      "assets/css/asset-app-6-61de16b7.css"
+    ],
+    "file": "assets/js/entry-app-1-d05bddef.js",
+    "isEntry": true,
+    "src": "js/app.js"
+  }
+}

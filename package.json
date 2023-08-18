@@ -1,0 +1,19 @@
+{
+  "name": "php-vite-v1",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite --mode dev",
+    "prod": "vite --mode prod",
+    "build": "vite build --mode prod",
+    "preview": "vite preview --mode prod"
+  },
+  "devDependencies": {
+    "vite": "^4.4.5"
+  },
+  "dependencies": {
+    "vite-plugin-live-reload": "^3.0.2",
+    "vite-plugin-static-copy": "^0.17.0"
+  }
+}
