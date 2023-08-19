@@ -11,8 +11,8 @@ $strH3 = 'H3 HEADER';
 $cViteJS = new Tool_ViteJS(
     $_ENV['VITE_SERVER_ORIGIN_URL'], 
     $_ENV['VITE_SERVER_ORIGIN_PORT'], 
-    'js/app.js', 
-    'build', 
+    $_ENV['VITE_ENTRY'], 
+    $_ENV['VITE_OUTDIR'], 
     null, 
     null, 
     $_ENV['APP_ENV'], 

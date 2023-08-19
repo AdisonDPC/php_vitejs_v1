@@ -20,6 +20,8 @@ export default defineConfig(({ command, mode }) => {
             __APP_DEBUG__: JSON.stringify(objEnv.APP_DEBUG),
             __APP_URL__: JSON.stringify(objEnv.APP_URL),
 
+            __VITE_ENTRY__: JSON.stringify(objEnv.VITE_ENTRY),
+            __VITE_OUTDIR__: JSON.stringify(objEnv.VITE_OUTDIR),
             __VITE_SERVER_HOST__: JSON.stringify(objEnv.VITE_SERVER_HOST),
             __VITE_SERVER_PORT__: JSON.stringify(objEnv.VITE_SERVER_PORT),
             __VITE_SERVER_ORIGIN_URL__: JSON.stringify(objEnv.VITE_SERVER_ORIGIN_URL),
@@ -60,7 +62,7 @@ export default defineConfig(({ command, mode }) => {
                 ...objDefine
             },
             root: path.resolve(__dirname, 'src'),
-            base: objEnv.APP_ENV === 'devel' ? '/' : '/build',
+            base: objEnv.APP_ENV === 'devel' ? '/' : '/' + objEnv.VITE_OUTDIR,
             plugins: [
                 liveReload([
 
@@ -101,10 +103,10 @@ export default defineConfig(({ command, mode }) => {
             ],
             build: {
                 manifest: true,
-                outDir: path.resolve(__dirname, 'public/build'),
+                outDir: path.resolve(__dirname, 'public/' + objEnv.VITE_OUTDIR),
                 emptyOutDir: true,
                 rollupOptions: {
-                    input: path.resolve(__dirname, 'src/js/app.js'),
+                    input: path.resolve(__dirname, 'src/' + objEnv.VITE_ENTRY),
                     output: {
                         assetFileNames: (mixAssetInfo) => {
 

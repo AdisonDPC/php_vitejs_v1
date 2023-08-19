@@ -35,6 +35,8 @@ console.log(__APP_ENV__);
 console.log(__APP_DEBUG__);
 console.log(__APP_URL__);
 
+console.log(__VITE_ENTRY__);
+console.log(__VITE_OUTDIR__);
 console.log(__VITE_SERVER_HOST__);
 console.log(__VITE_SERVER_PORT__);
 console.log(__VITE_SERVER_ORIGIN_URL__);
