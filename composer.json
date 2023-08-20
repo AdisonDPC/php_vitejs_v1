@@ -2,5 +2,27 @@
     "require": {
         "kint-php/kint": "^5.0",
         "vlucas/phpdotenv": "^5.5"
+    },
+    "scripts": {
+        "serve": [
+            "@php -S 0.0.0.0:8000 -t public/"
+        ],
+        "env-init": [
+            "@php -r \"file_exists('tmp') || mkdir('tmp');\"",
+            "@php -r \"file_exists('tmp/default.txt') || touch('tmp/default.txt');\"",
+            "@php -r \"file_exists('tmp/.env.run') || copy('.env.example', 'tmp/.env.run');\""
+        ],
+        "env-dev": [
+            "@php -r \"copy('.env.dev', 'tmp/.env.run');\""
+        ],
+        "env-prod": [
+            "@php -r \"copy('.env.prod', 'tmp/.env.run');\""
+        ],
+        "post-install-cmd": [
+            "@env-init"
+        ],
+        "post-update-cmd": [
+            "@env-init"
+        ]
     }
 }

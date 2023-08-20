@@ -16,6 +16,9 @@ dist-ssr
 vendor
 composer.lock
 
+tmp/*
+!tmp/default.txt
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
