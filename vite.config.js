@@ -28,6 +28,9 @@ export default defineConfig(({ command, mode }) => {
             __VITE_SERVER_ORIGIN_PORT__: JSON.stringify(objEnv.VITE_SERVER_ORIGIN_PORT),
             __VITE_PREVIEW_HOST__: JSON.stringify(objEnv.VITE_PREVIEW_HOST),
             __VITE_PREVIEW_PORT__: JSON.stringify(objEnv.VITE_PREVIEW_PORT),
+            __VITE_SERVER_HMR_HOST__: JSON.stringify(objEnv.VITE_SERVER_HMR_HOST),
+            __VITE_SERVER_HMR_PORT__: JSON.stringify(objEnv.VITE_SERVER_HMR_PORT),
+            __VITE_SERVER_HMR_CLIENT_PORT__: JSON.stringify(objEnv.VITE_SERVER_HMR_CLIENT_PORT),
 
             __DB_CONNECTION__: JSON.stringify(objEnv.DB_CONNECTION),
             __DB_HOST__: JSON.stringify(objEnv.DB_HOST),
@@ -51,7 +54,12 @@ export default defineConfig(({ command, mode }) => {
             server: {
                 host: objEnv.VITE_SERVER_HOST,
                 port: objEnv.VITE_SERVER_PORT, 
-                origin: objEnv.VITE_SERVER_ORIGIN_URL + ':' + objEnv.VITE_SERVER_ORIGIN_PORT
+                origin: objEnv.VITE_SERVER_ORIGIN_URL + ':' + objEnv.VITE_SERVER_ORIGIN_PORT,
+                // hmr: {
+                //     host: objEnv.VITE_SERVER_HMR_HOST,
+                //     port: objEnv.VITE_SERVER_HMR_PORT,
+                //     clientPort: objEnv.VITE_SERVER_HMR_CLIENT_PORT
+                // }
             },
             preview: {
                 host: objEnv.VITE_SERVER_HOST,

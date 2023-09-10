@@ -43,6 +43,9 @@ console.log(__VITE_SERVER_ORIGIN_URL__);
 console.log(__VITE_SERVER_ORIGIN_PORT__);
 console.log(__VITE_PREVIEW_HOST__);
 console.log(__VITE_PREVIEW_PORT__);
+console.log(__VITE_SERVER_HMR_HOST__);
+console.log(__VITE_SERVER_HMR_PORT__);
+console.log(__VITE_SERVER_HMR_CLIENT_PORT__);
 
 console.log(__DB_CONNECTION__);
 console.log(__DB_HOST__);
