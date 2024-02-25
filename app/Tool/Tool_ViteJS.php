@@ -150,7 +150,7 @@ class Tool_ViteJS {
 
     public function mtdManifest () {
 
-        $mixContent = file_get_contents($this -> strBasePATH . '/' . $this -> strOutDir  . '/manifest.json');
+        $mixContent = file_get_contents($this -> strBasePATH . '/' . $this -> strOutDir  . '/.vite/manifest.json');
 
         return $mixContent ? json_decode($mixContent, true) : [];
 
