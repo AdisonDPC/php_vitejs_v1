@@ -207,7 +207,7 @@ class Tool_ViteJS {
 
     public function mtdAssetsPATHs ($strEntry, $strPATH = 'assets') {
 
-        $aPATHs = $this -> mtdAssets($strEntry, $path);
+        $aPATHs = $this -> mtdAssets($strEntry, $strPATH);
 
         foreach ($aPATHs as &$strPATH)
             $strPATH = $this -> strBasePATH . '/' . $this -> strOutDir . '/' . $strPATH;
@@ -224,7 +224,7 @@ class Tool_ViteJS {
 
     public function mtdCSSPATHs () {
 
-        return $this -> mrtdAssetsPATHs($this -> strEntry, 'css');
+        return $this -> mtdAssetsPATHs($this -> strEntry, 'css');
 
     }
 
