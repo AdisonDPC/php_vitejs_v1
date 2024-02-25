@@ -1,19 +1,21 @@
 {
-  "name": "php-vite-v1",
-  "private": true,
-  "version": "0.0.0",
-  "type": "module",
-  "scripts": {
-    "dev": "vite --mode dev",
-    "prod": "vite --mode prod",
-    "build": "vite build --mode prod",
-    "preview": "vite preview --mode prod"
-  },
-  "devDependencies": {
-    "vite": "^4.4.5"
-  },
-  "dependencies": {
-    "vite-plugin-live-reload": "^3.0.2",
-    "vite-plugin-static-copy": "^0.17.0"
-  }
+    "name": "php-vite-v1",
+    "private": true,
+    "version": "0.0.0",
+    "type": "module",
+    "scripts": {
+        "dev": "vite --mode dev",
+        "prod": "vite --mode prod",
+        "build": "vite build --mode prod",
+        "preview": "vite preview --mode prod"
+    },
+    "devDependencies": {
+        "vite": "^5.1.4",
+        "postcss": "^8.4.35",
+        "sass": "^1.71.1"
+    },
+    "dependencies": {
+        "vite-plugin-live-reload": "^3.0.3",
+        "vite-plugin-static-copy": "^1.0.1"
+    }
 }

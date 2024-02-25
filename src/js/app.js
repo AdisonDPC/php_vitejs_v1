@@ -6,6 +6,7 @@ import.meta.glob([
 ]);
 
 import '@/css/app.css'
+import '@/sass/app.scss'
 import javascriptLogo from '@/image/dynamic/javascript.svg'
 import viteLogo from '@/image/dynamic/vite.svg'
 import { setupCounter } from '@/js/counter.js'
