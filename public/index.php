@@ -56,7 +56,7 @@ d($_ENV, $cViteJS -> mtdGetProperties(), $cViteJS -> mtdManifest());
 
         <div id="app"></div>
 
-        <?= $cViteJS -> mtdInit() ?>
+        <?= $cViteJS -> mtdInit(); ?>
 
     </body>
 </html>
