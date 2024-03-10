@@ -111,6 +111,7 @@ export default defineConfig(({ command, mode }) => {
             ],
             build: {
                 manifest: true,
+                assetsInlineLimit: 1024,
                 outDir: path.resolve(__dirname, 'public/' + objEnv.VITE_OUTDIR),
                 emptyOutDir: true,
                 rollupOptions: {
