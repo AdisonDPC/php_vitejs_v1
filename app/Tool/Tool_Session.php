@@ -49,7 +49,7 @@ class Tool_Session {
 
         if (!isset($_SESSION[ $strKey ])) {
 
-            $jsonMessage = json_encode([ 'Message' => ' - SESSION (GET) => There is no variable "' . $strKey . '".' ]); 
+            $jsonMessage = json_encode([ 'Message' => ' - SESSION (GET) => There is no variable ' . $strKey . '.' ]); 
             
             return $jsonMessage;
 
@@ -58,7 +58,7 @@ class Tool_Session {
         // Access the session.
         $mixValue = $_SESSION[ $strKey ];
 
-        $jsonMessage = json_encode([ 'Message' => ' - SESSION (GET) => [ ' . $strKey . ' ] = "' . $mixValue . '"' ]);
+        $jsonMessage = json_encode([ 'Message' => ' - SESSION (GET) => [ ' . $strKey . ' ] = ' . $mixValue ]);
 
         return $jsonMessage;
 
@@ -78,7 +78,7 @@ class Tool_Session {
 
         if (!isset($_SESSION[ $strKey ])) { 
             
-            $jsonMessage = json_encode([ 'Message' => ' - SESSION (DELETE) => There is no variable "' . $strKey . '".' ]); 
+            $jsonMessage = json_encode([ 'Message' => ' - SESSION (DELETE) => There is no variable ' . $strKey . '.' ]); 
 
             return $jsonMessage;
 
