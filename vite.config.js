@@ -5,6 +5,13 @@ import liveReload from 'vite-plugin-live-reload';
 
 import path from 'path';
 
+// COMMAND
+//      BUILD 
+//          DEV: npm run build -- --mode development
+//          PROD: npm run build -- --mode production
+//      SERVE:
+//          npm run dev -- --host 0.0.0.0
+
 export default defineConfig(({ command, mode }) => {
 
     let iAssetFile = 0, iChunkFile = 0, iEntryFile = 0;
@@ -54,12 +61,12 @@ export default defineConfig(({ command, mode }) => {
             server: {
                 host: objEnv.VITE_SERVER_HOST,
                 port: objEnv.VITE_SERVER_PORT, 
-                origin: objEnv.VITE_SERVER_ORIGIN_URL + ':' + objEnv.VITE_SERVER_ORIGIN_PORT,
-                // hmr: {
-                //     host: objEnv.VITE_SERVER_HMR_HOST,
-                //     port: objEnv.VITE_SERVER_HMR_PORT,
-                //     clientPort: objEnv.VITE_SERVER_HMR_CLIENT_PORT
-                // }
+                // origin: objEnv.VITE_SERVER_ORIGIN_URL + ':' + objEnv.VITE_SERVER_ORIGIN_PORT,
+                hmr: {
+                    host: objEnv.VITE_SERVER_HMR_HOST,
+                    port: objEnv.VITE_SERVER_HMR_PORT,
+                    clientPort: objEnv.VITE_SERVER_HMR_CLIENT_PORT
+                }
             },
             preview: {
                 host: objEnv.VITE_SERVER_HOST,
@@ -150,6 +157,13 @@ export default defineConfig(({ command, mode }) => {
                             return 'assets/js/entry-[name]-' + iEntryFile + '-[hash].js';
                         }
                     },
+                }
+            },
+            css: {
+                preprocessorOptions: {
+                    scss: {
+                        api: 'modern'
+                    }
                 }
             },
             resolve: {
