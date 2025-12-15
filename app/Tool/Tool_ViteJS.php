@@ -26,7 +26,8 @@ class Tool_ViteJS {
     // Helpers here serve as example. Change to suit your needs.
 
     private const 
-        VITE_HOST = 'http://localhost', 
+        VITE_HOST = 'localhost', 
+        VITE_PROTOCOL='http',
         VITE_PORT = 5173,
         VITE_ENTRY = 'main.js',
         VITE_OUT_DIR = 'dist',
@@ -38,24 +39,27 @@ class Tool_ViteJS {
     protected 
         $strHost, 
         $iPort,
-        $strEntry,
+        $aEntries,
         $strOutDir,
         $strBaseURL,
         $strBasePATH,
         $strEnvironment,
         $bServerIsRunning;
 
-    public function __construct ($strHost = null, $iPort = null, $strEntry = null, $strOutDir = null, $strBaseURL = null, $strBasePATH = null, $strEnvironment = null, $bServerIsRunning = null) {
+    public function __construct ($strHost = null, $iPort = null, $mixEntries = null, $strOutDir = null, $strBaseURL = null, $strBasePATH = null, $strEnvironment = null, $bServerIsRunning = null) {
 
         $this -> strHost = $strHost ?? self::VITE_HOST;
         $this -> iPort = $iPort ?? self::VITE_PORT;
-        $this -> strEntry = $strEntry ?? self::VITE_ENTRY;
         $this -> strOutDir = $strOutDir ?? self::VITE_OUT_DIR;
         $this -> strBaseURL = $strBaseURL ?? self::VITE_BASE_URL;
         $this -> strBasePATH = $strBasePATH ?? self::VITE_BASE_PATH;
         $this -> strEnvironment = $strEnvironment ?? self::VITE_ENVIRONMENT;
         $this -> bServerIsRunning = $bServerIsRunning ?? self::VITE_SERVER_IS_RUNNING;
-    
+
+        if (is_string($mixEntries)) $mixEntries = [ $mixEntries ];
+
+        $this -> aEntries = $mixEntries ?: [ self::VITE_ENTRY ];
+
     }
 
     public function mtdGetHost () { return $this -> strHost; }
@@ -72,7 +76,7 @@ class Tool_ViteJS {
         return [
             'HOST' => $this -> strHost,
             'PORT' => $this -> iPort,
-            'ENTRY' => $this -> strEntry,
+            'ENTRIES' => $this -> aEntries,
             'OUT_DIR' => $this -> strOutDir,
             'BASE_URL' => $this -> strBaseURL,
             'BASE_PATH' => $this -> strBasePATH,
@@ -84,24 +88,51 @@ class Tool_ViteJS {
 
     public function mtdSetHost ($strHost = null) { $this -> strHost = $strHost ?? self::VITE_HOST; }
     public function mtdSetPort ($iPort = null) { $this -> iPort = $iPort ?? self::VITE_PORT; }
-    public function mtdSetEntry ($strEntry = null) { $this -> strEntry = $strEntry ?? self::VITE_ENTRY; }
+
+    public function mtdSetEntry ($mixEntries = []) { 
+
+        if (is_string($mixEntries)) $mixEntries = [ $mixEntries ];
+
+        if (empty($mixEntries)) return;
+
+        $this -> aEntries = $mixEntries;
+
+    }
+
     public function mtdSetOutDir ($strOutDir = null) { $this -> strOutDir = $strOutDir ?? self::VITE_OUT_DIR; }
     public function mtdSetBaseURL ($strBaseURL = null) { $this -> strBaseURL = $strBaseURL ?? self::VITE_BASE_URL; }
     public function mtdSetBasePATH ($strBasePATH = null) { $this -> strBasePATH = $strBasePATH ?? self::VITE_BASE_PATH; }
     public function mtdSetEnvironment ($strEnvironment = null) { $this -> strEnvironment = $strEnvironment ?? self::VITE_ENVIRONMENT; }
     public function mtdSetServerIsRunning ($bServerIsRunning = null) { $this -> bServerIsRunning = $bServerIsRunning ?? self::VITE_SERVER_IS_RUNNING; }
 
-    public function mtdSetProperties ($strHost = null, $iPort = null, $strEntry = null, $strOutDir = null, $strBaseURL = null, $strBasePATH = null, $bServerIsRunning = null) {
+    public function mtdSetProperties ($strHost = null, $iPort = null, $mixEntries = null, $strOutDir = null, $strBaseURL = null, $strBasePATH = null, $bServerIsRunning = null) {
 
         $this -> strHost = $strHost ?? self::VITE_HOST;
         $this -> iPort = $iPort ?? self::VITE_PORT;
-        $this -> strEntry = $strEntry ?? self::VITE_ENTRY;
         $this -> strOutDir =  $strOutDir ?? self::VITE_OUT_DIR;
         $this -> strBaseURL = $strBaseURL ?? self::VITE_BASE_URL;
         $this -> strBasePATH = $strBasePATH ?? self::VITE_BASE_PATH;
         $this -> strEnvironment = $strEnvironment ?? self::VITE_ENVIRONMENT;
         $this -> bServerIsRunning = $bServerIsRunning ?? self::VITE_SERVER_IS_RUNNING;
-    
+
+        if (!is_null($mixEntries)) {
+
+            if (is_string($mixEntries)) $mixEntries = [ $mixEntries ];
+
+            $this -> aEntries = $mixEntries;
+
+        }
+
+    }
+
+    public function mtdAddEntry ($mixEntries = []) { 
+
+        if (is_string($mixEntries)) $mixEntries = [ $mixEntries ];
+
+        if (empty($mixEntries)) return;
+
+        $this -> aEntries = array_unique(array_merge($this -> aEntries, $mixEntries));
+
     }
 
     public function mtdIsDevelopment () { return $this -> strEnvironment === self::VITE_ENVIRONMENT; }
@@ -144,7 +175,10 @@ class Tool_ViteJS {
 
     public function mtdIsRunning() {
 
-        return $this -> mtdIsDevelopment() && $this -> mtdEntryExists();
+        foreach ($this -> aEntries as $strEntry)
+            if ($this->mtdIsDevelopment() && $this->mtdEntryExists($strEntry)) return true;
+
+        return false;
 
     }
 
@@ -160,7 +194,7 @@ class Tool_ViteJS {
 
         $aManifest = $this -> mtdManifest();
 
-        return !isset($aManifest[ $strEntry ]) ? '' : $aManifest[ $strEntry ]['file'];
+        return $aManifest[ $strEntry ]['file'] ?? '';
 
     }
 
@@ -218,13 +252,23 @@ class Tool_ViteJS {
 
     public function mtdCSSURLs () {
 
-        return $this -> mtdAssetsURLs($this -> strEntry, 'css');
+        $aURLs = [];
+
+        foreach ($this -> aEntries as $strEntry)
+            $aURLs = array_merge($aURLs, $this -> mtdAssetsURLs($strEntry, 'css'));
+
+        return $aURLs;
 
     }
 
     public function mtdCSSPATHs () {
 
-        return $this -> mtdAssetsPATHs($this -> strEntry, 'css');
+        $aPATHs = [];
+
+        foreach ($this -> aEntries as $strEntry)
+            $aPATHs = array_merge($aPATHs, $this -> mtdAssetsPATHs($strEntry, 'css'));
+
+        return $aPATHs;
 
     }
 
@@ -246,13 +290,23 @@ class Tool_ViteJS {
 
     public function mtdJSURL () {
 
-        return $this -> mtdAssetURL($this -> strEntry);
+        $aURLs = [];
+
+        foreach ($this -> aEntries as $strEntry)
+            $aURLs[] = $this -> mtdAssetURL($strEntry);
+
+        return $aURLs;
 
     }
 
     public function mtdJSPATH () {
 
-        return $this -> mtdAssetPATH($this -> strEntry);
+        $aPATHs = [];
+
+        foreach ($this -> aEntries as $strEntry)
+            $aPATHs[] = $this -> mtdAssetPATH($strEntry);
+
+        return $aPATHs;
 
     }
 
@@ -300,18 +354,21 @@ class Tool_ViteJS {
 
     public function mtdJSTag () {
 
-        $strURL = $this -> mtdIsRunning() ? $this -> mtdHost() . '/' . $this -> strEntry : $this -> mtdJSURL();
+        $strHTML = '';
 
-        if (!$strURL) return '';
+        foreach ($this -> aEntries as $strEntry) {
 
-        if ($this -> mtdIsRunning()) {
-            $strHTML = '<script type="module" crossorigin src="' . $this -> mtdHost() . '/@vite/client"></script>';
+            $strURL = $this -> mtdIsRunning() ? $this -> mtdHost() . '/' . $strEntry : $this -> mtdAssetURL($strEntry);
+
+            if (!$strURL) continue;
+
+            if ($this -> mtdIsRunning()) $strHTML .= '<script type="module" crossorigin src="' . $this -> mtdHost() . '/@vite/client"></script>';
+
             $strHTML .= '<script type="module" crossorigin src="' . $strURL . '"></script>';
 
-            return $strHTML;
         }
 
-        return '<script type="module" crossorigin src="' . $strURL . '"></script>';
+        return $strHTML;
 
     }
 
@@ -321,8 +378,9 @@ class Tool_ViteJS {
 
         $strRes = '';
 
-        foreach ($this -> mtdImportsURLs($this -> strEntry) as $strURL)
-            $strRes .= '<link rel="modulepreload" href="' . $strURL . '">';
+        foreach ($this -> aEntries as $strEntry)
+            foreach ($this -> mtdImportsURLs($strEntry) as $strURL)
+                $strRes .= '<link rel="modulepreload" href="' . $strURL . '">';
 
         return $strRes;
 
@@ -352,14 +410,14 @@ class Tool_ViteJS {
 
         $strRes = '';
 
-        foreach ($this -> mtdAssetsURLs($this -> strEntry) as $strURL) {
+        foreach ($this -> aEntries as $strEntry)
+            foreach ($this -> mtdAssetsURLs($strEntry) as $strURL) {
 
-            if (!str_ends_with($strURL, '.' . $strType)) continue;
+                if (!str_ends_with($strURL, '.' . $strType)) continue;
 
-            if ($strType === 'woff2')
-                $strRes .= '<link rel="preload" href="' . $strURL . '" as="font" type="font/woff2" crossorigin="anonymous">';
+                if ($strType === 'woff2') $strRes .= '<link rel="preload" href="' . $strURL . '" as="font" type="font/woff2" crossorigin="anonymous">';
 
-        }
+            }
 
         return $strRes;
 
@@ -375,20 +433,22 @@ class Tool_ViteJS {
 
         if ($this -> mtdIsRunning()) return '';
 
-        $strURL = $this -> mtdAssetURL(str_replace('.js', '-legacy.js', $this -> strEntry));
+        $strScript = '';
 
-        $strPolyfillURL = $this -> mtdAssetURL('vite/legacy-polyfills');
+        foreach ($this -> aEntries as $strEntry) {
 
-        if (!$strPolyfillURL)
-            $strPolyfillURL = $this -> mtdAssetURL('../vite/legacy-polyfills');
+            $strURL = $this -> mtdAssetURL(str_replace('.js', '-legacy.js', $strEntry));
+            $strPolyfillURL = $this -> mtdAssetURL('vite/legacy-polyfills');
 
-        if (!$strURL || !$strPolyfillURL) return '';
+            if (!$strPolyfillURL) $strPolyfillURL = $this -> mtdAssetURL('../vite/legacy-polyfills');
 
-        $strScript = '<script nomodule>!function(){var e=document,t=e.createElement("script");if(!("noModule"in t)&&"onbeforeload"in t){var n=!1;e.addEventListener("beforeload",(function(e){if(e.target===t)n=!0;else if(!e.target.hasAttribute("nomodule")||!n)return;e.preventDefault()}),!0),t.type="module",t.src=".",e.head.appendChild(t),t.remove()}}();</script>';
+            if (!$strURL || !$strPolyfillURL) continue;
 
-        $strScript .= '<script nomodule src="' . $strPolyfillURL . '"></script>';
+            $strScript .= '<script nomodule>!function(){var e=document,t=e.createElement("script");if(!("noModule"in t)&&"onbeforeload"in t){var n=!1;e.addEventListener("beforeload",(function(e){if(e.target===t)n=!0;else if(!e.target.hasAttribute("nomodule")||!n)return;e.preventDefault()}),!0),t.type="module",t.src=".",e.head.appendChild(t),t.remove()}}();</script>';
+            $strScript .= '<script nomodule src="' . $strPolyfillURL . '"></script>';
+            $strScript .= '<script nomodule id="vite-legacy-entry" data-src="' . $strURL . '">System.import(document.getElementById(\'vite-legacy-entry\').getAttribute(\'data-src\'))</script>';
 
-        $strScript .= '<script nomodule id="vite-legacy-entry" data-src="' . $strURL . '">System.import(document.getElementById(\'vite-legacy-entry\').getAttribute(\'data-src\'))</script>';
+        }
 
         return $strScript;
 
