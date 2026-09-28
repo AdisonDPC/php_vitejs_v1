@@ -76,14 +76,14 @@ export default defineConfig(({ command, mode }) => {
                 global: 'window',
                 ...objDefine
             },
-            root: path.resolve(__dirname, 'src'),
+            root: path.resolve(import.meta.dirname, 'src'),
             base: objEnv.APP_ENV === 'devel' ? '/' : '/' + objEnv.VITE_OUTDIR,
             plugins: [
                 liveReload([
 
                     // Edit live reload paths according to your source code.
 
-                    __dirname + '/public/**/*.php',
+                    import.meta.dirname + '/public/**/*.php',
 
                 ]),
                 viteStaticCopy({
@@ -91,27 +91,27 @@ export default defineConfig(({ command, mode }) => {
                     targets: [
                         {
                             src: 'template/libs',
-                            dest: 'assets/template'
+                            dest: 'assets'
                         },
                         {
                             src: 'template/js',
-                            dest: 'assets/template'
+                            dest: 'assets'
                         },
                         {
                             src: 'template/css',
-                            dest: 'assets/template'
+                            dest: 'assets'
                         },
                         {
                             src: 'template/fonts',
-                            dest: 'assets/template'
+                            dest: 'assets'
                         },
                         {
                             src: 'template/images',
-                            dest: 'assets/template'
+                            dest: 'assets'
                         },
                         {
                             src: 'template/data',
-                            dest: 'assets/template'
+                            dest: 'assets'
                         }
                     ]
                 }),
@@ -119,10 +119,10 @@ export default defineConfig(({ command, mode }) => {
             build: {
                 manifest: true,
                 assetsInlineLimit: 0,
-                outDir: path.resolve(__dirname, 'public/' + objEnv.VITE_OUTDIR),
+                outDir: path.resolve(import.meta.dirname, 'public/' + objEnv.VITE_OUTDIR),
                 emptyOutDir: true,
                 rollupOptions: {
-                    input: path.resolve(__dirname, 'src/' + objEnv.VITE_ENTRY),
+                    input: path.resolve(import.meta.dirname, 'src/' + objEnv.VITE_ENTRY),
                     output: {
                         assetFileNames: (mixAssetInfo) => {
 
@@ -168,7 +168,7 @@ export default defineConfig(({ command, mode }) => {
             },
             resolve: {
                 alias: {
-                    '@': path.resolve(__dirname, 'src'),
+                    '@': path.resolve(import.meta.dirname, 'src'),
                 }
             }
         };

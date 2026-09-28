@@ -4,7 +4,8 @@ import.meta.glob(
     [
         '@/favicon/**/*.{png,svg,ico}',
         '@/image/static/**/*.{png,svg,jpg,jpeg,webp,ico}'
-    ]
+    ],
+    { eager: true }
 );
 
 import '@/css/app.css'

@@ -6,7 +6,8 @@
     "scripts": {
         "serve": [
             "Composer\\Config::disableProcessTimeout",
-            "@php -S 0.0.0.0:8000 -t public/"
+            "@putenv PHP_CLI_SERVER_WORKERS=4",
+            "@php -d memory_limit=256M -d max_execution_time=60 -S 0.0.0.0:8000 -t public/"
         ],
         "env-init": [
             "@php -r \"file_exists('tmp') || mkdir('tmp');\"",
